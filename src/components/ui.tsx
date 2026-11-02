@@ -57,16 +57,18 @@ export function Card({ title, children, action }: { title?: string; children: Re
   );
 }
 
-export function BrandMark({ light = false }: { light?: boolean } = {}) {
+export function BrandMark({ light = false, className = "" }: { light?: boolean; className?: string } = {}) {
   return (
-    <Link href="/" className={`inline-flex items-center gap-2 font-semibold ${light ? "text-white" : "text-navy"}`}>
-      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
-        <rect x="4" y="4" width="24" height="6" rx="1.5" fill={light ? "#ffffff" : "#173D78"} />
-        <rect x="13" y="4" width="6" height="24" rx="1.5" fill={light ? "#ffffff" : "#173D78"} />
-        <circle cx="22.5" cy="22" r="2.2" fill="none" stroke="#21B8C9" strokeWidth="1.8" />
-        <path d="M22.5 24.2c0 2-2 3-4 2.2" fill="none" stroke="#21B8C9" strokeWidth="1.8" strokeLinecap="round" />
-      </svg>
-      Tailorly
+    <Link href="/" aria-label="Tailorly home — Your Tailoring Business, Digitally Connected." className={`brand-mark ${light ? "brand-mark--light" : ""} ${className}`}>
+      <span className="brand-logo-full">
+        {/* The supplied official artwork is the platform source of truth. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/brand/tailorly-logo.png" alt="" data-static-image />
+      </span>
+      <span className="brand-logo-compact">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/brand/tailorly-mark.png" alt="" data-static-image />
+      </span>
     </Link>
   );
 }
@@ -107,11 +109,13 @@ export function AuthShell({ title, subtitle, children }: { title: string; subtit
         <aside className="auth-showcase relative min-h-[18rem] overflow-hidden lg:min-h-0">
           <img src={FASHION_MEDIA.tailorAtWork} alt="Tailor working in a fashion studio" className="image-motion absolute inset-0 h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-br from-navy/85 via-navy/35 to-cyan/35" />
+          <div className="auth-showcase-orbit auth-showcase-orbit--one" aria-hidden="true" />
+          <div className="auth-showcase-orbit auth-showcase-orbit--two" aria-hidden="true" />
           <div className="absolute inset-x-0 bottom-0 p-10 text-white xl:p-16">
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-100">Made in Africa. Made for you.</span>
+            <span className="auth-showcase-badge inline-flex rounded-full border border-white/30 bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100 backdrop-blur">Made in Africa. Made for you.</span>
             <h2 className="mt-4 max-w-xl text-4xl font-semibold leading-tight xl:text-6xl">Wear your story.</h2>
             <p className="mt-4 max-w-lg text-base leading-7 text-blue-50">Connect with Nigerian designers creating Ankara, Aso-ebi, Agbada and contemporary African fashion.</p>
-            <div className="mt-7 flex items-center gap-3 text-sm text-blue-100"><span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/40">T</span><span>Tailorly<br /><span className="text-xs text-cyan-100">Your style, beautifully made.</span></span></div>
+            <div className="auth-showcase-signature mt-7 flex items-center gap-3 text-sm text-blue-100"><span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-cyan/70 bg-navy/40 font-semibold text-cyan">T</span><span>Tailorly<br /><span className="text-xs text-cyan-100">Your style, beautifully made.</span></span></div>
           </div>
         </aside>
       </div>

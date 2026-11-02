@@ -4,6 +4,7 @@ import { ctaGhost, ctaPrimary, InfoCard, MarketingShell, Section } from "@/compo
 import { listFeaturedProducts, listPublicCategories } from "@/catalogue/service";
 import { getPageContext } from "@/lib/page-context";
 import { FASHION_MEDIA } from "@/site/media";
+import { HomepageHeroCarousel } from "@/components/homepage-hero-carousel";
 import { ShopHome } from "./shop-pages";
 
 export const dynamic = "force-dynamic";
@@ -24,21 +25,21 @@ export default async function Home() {
   }
   return (
     <MarketingShell>
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#eefbfc] via-white to-[#edf3ff]">
-        <div className="hero-glow animate-pulse-glow -left-24 top-12" aria-hidden="true" />
+      <section className="home-hero relative overflow-hidden bg-gradient-to-br from-[#eefbfc] via-white to-[#edf3ff]">
+        <div className="hero-glow home-accent-glow animate-pulse-glow -left-24 top-12" aria-hidden="true" />
         <div className="hero-glow animate-pulse-glow -right-32 bottom-0 bg-navy" aria-hidden="true" />
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:py-24 lg:grid-cols-[0.92fr_1.08fr]">
+        <div className="mx-auto grid max-w-7xl items-center gap-7 px-4 py-9 sm:gap-10 sm:py-24 lg:grid-cols-[0.92fr_1.08fr]">
           <div className="relative z-10 animate-rise-in">
-            <span className="inline-flex rounded-full bg-cyan/15 px-4 py-2 text-sm font-semibold text-navy">Nigerian fashion. Digitally connected.</span>
-            <h1 aria-label="Discover Tailors. Find Your Style. Get It Made." className="mt-5 text-4xl font-semibold leading-[1.08] tracking-tight text-navy sm:text-6xl">Discover tailors.<br /><span className="text-cyan-dark">Find your style.</span><br />Get it made.</h1>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">Explore trusted tailors, request custom designs, track your orders and experience premium fashion from independent businesses.</p>
-          <div className="mt-8 flex flex-wrap gap-3">
+            <span className="inline-flex rounded-full bg-cyan/15 px-3 py-1.5 text-xs font-semibold text-navy sm:px-4 sm:py-2 sm:text-sm">Nigerian fashion. Digitally connected.</span>
+            <h1 aria-label="Discover Tailors. Find Your Style. Get It Made." className="mt-4 max-w-[19rem] text-[2.35rem] font-semibold leading-[1.08] tracking-tight text-navy sm:mt-5 sm:max-w-none sm:text-6xl">Discover tailors.<br /><span className="text-cyan-dark">Find your style.</span><br />Get it made.</h1>
+            <p className="mt-4 max-w-xl text-base leading-7 text-slate-700 sm:mt-5 sm:text-lg sm:leading-8">Explore trusted tailors, request custom designs, track your orders and experience premium fashion from independent businesses.</p>
+          <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
             <Link href="/shops" className={ctaPrimary}>Explore Shops</Link>
             <Link href="/for-tailors" className={ctaGhost}>Create Your Shop</Link>
           </div>
           </div>
           <div className="fashion-card animate-rise-in-delay animate-float relative z-10 min-h-72 overflow-hidden border-0 bg-navy p-3 shadow-2xl sm:min-h-[30rem]">
-            <img src={FASHION_MEDIA.hero} alt="Nigerian fashion market showcase" className="image-motion h-full min-h-72 w-full rounded-[1.35rem] object-cover opacity-90 sm:min-h-[29rem]" />
+            <HomepageHeroCarousel />
             <div className="absolute inset-3 rounded-[1.35rem] bg-gradient-to-t from-navy via-navy/20 to-transparent" />
             <div className="absolute bottom-8 left-8 right-8 text-white"><p className="text-sm font-semibold uppercase tracking-wider text-cyan-100">From Lagos studios to your wardrobe.</p><p className="mt-3 text-3xl font-semibold">Designed here. Made for you.</p><p className="mt-2 max-w-md text-sm leading-6 text-blue-100">Meet independent Nigerian designers creating modern native looks, occasionwear and everyday pieces.</p></div>
           </div>
@@ -48,22 +49,12 @@ export default async function Home() {
       <section className="fashion-panel">
         <Section title="Style that feels like you">
           <div className="animate-stagger grid gap-5 md:grid-cols-3">
-            {FASHION_MEDIA.styleCards.map(({ src: image, alt }, index) => {
-              const copy = [
-                ["Ankara statement looks", "Bold prints, fitted silhouettes and expressive colour for standout everyday style."],
-                ["Modern native tailoring", "Clean senator styles, agbada-inspired layers and sharp contemporary cuts."],
-                ["Sky-blue occasionwear", "Polished native silhouettes with a calm, modern finish for celebrations."],
-                ["Contemporary statement dresses", "Confident colour, sculptural detail and expressive silhouettes for special moments."],
-                ["Runway colour and texture", "Discover bold fabrics and considered details from Nigeria’s emerging fashion scene."],
-                ["Bespoke fitting", "Work directly with a tailor to shape the fabric, fit and finish around you."],
-              ][index];
-              return (
+            {FASHION_MEDIA.styleCards.map(({ src: image, alt, title, description }) => (
               <article key={alt} className="fashion-card fashion-card--soft interactive-lift group">
                 <img src={image} alt={alt} className="image-motion fashion-image h-56 w-full object-cover" />
-                <div className="p-5"><h3 className="text-lg font-semibold text-navy">{copy[0]}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{copy[1]}</p></div>
+                <div className="p-5"><h3 className="text-lg font-semibold text-navy">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{description}</p></div>
               </article>
-              );
-            })}
+            ))}
           </div>
         </Section>
       </section>

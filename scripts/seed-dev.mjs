@@ -25,7 +25,22 @@ const shops = [
     products: [
       { name: "Senator Suit", slug: "senator-suit", category: "traditional-wear", price: 3500000, featured: true, variants: [["M", 4], ["L", 2], ["XL", 0]] },
       { name: "Native Two-Piece", slug: "two-piece-business-suit", category: "suits", price: 8500000, featured: true, variants: [["Standard", 5]] },
-      { name: "Custom Agbada", slug: "custom-agbada", category: "traditional-wear", price: 6000000, kind: "custom_service", featured: false, variants: [["Standard", 0]], trackStock: false },
+      {
+        name: "Bespoke Native Fitting",
+        slug: "bespoke-native-fitting",
+        category: "traditional-wear",
+        price: 6000000,
+        kind: "custom_service",
+        featured: true,
+        variants: [["Standard", 0]],
+        trackStock: false,
+        description: "A made-to-measure native-wear consultation and fitting. Work with a Royal Stitches tailor to choose the fabric, refine the fit and plan the finished look around your measurements.",
+        images: [{
+          url: "/fashion/bespoke_vs_ready_to_wear.webp",
+          publicId: "demo/bespoke-native-fitting",
+          alt: "Tailor fitting a customer for bespoke native wear",
+        }],
+      },
     ],
   },
   {
@@ -75,7 +90,7 @@ for (const s of shops) {
     await db.collection("products").updateOne(
       { tenantId: tenant._id, slug: p.slug },
       {
-        $set: { name: p.name, description: `${p.name} from ${s.name}. Nigerian-inspired tailoring made for modern wardrobes.`, kind: p.kind ?? "ready_made", categoryId: catIds[p.category], images: [], basePrice: p.price, currency: "NGN", status: "published", featured: p.featured, tags: ["Nigerian fashion", "African design"], trackStock: p.trackStock ?? true, lowStockThreshold: 3, updatedAt: now },
+        $set: { name: p.name, description: p.description ?? `${p.name} from ${s.name}. Nigerian-inspired tailoring made for modern wardrobes.`, kind: p.kind ?? "ready_made", categoryId: catIds[p.category], images: p.images ?? [], basePrice: p.price, currency: "NGN", status: "published", featured: p.featured, tags: ["Nigerian fashion", "African design"], trackStock: p.trackStock ?? true, lowStockThreshold: 3, updatedAt: now },
         $setOnInsert: { tenantId: tenant._id, slug: p.slug, variants, createdBy: owner, createdAt: now },
       },
       { upsert: true },

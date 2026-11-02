@@ -27,7 +27,7 @@ export default function ForgotPasswordPage() {
         <form onSubmit={onSubmit} className="space-y-4" noValidate>
           {error && !errors.email ? <Alert kind="error">{error}</Alert> : null}
           <Field label="Email" name="email" type="email" autoComplete="email" required error={errors.email} />
-          <Button type="submit" disabled={busy} className="w-full">{busy ? "Sending..." : "Send reset link"}</Button>
+          <Button type="submit" disabled={busy} className="auth-submit w-full">{busy ? "Sending..." : "Send reset link"}</Button>
         </form>
       )}
       <p className="mt-4 text-sm"><Link href="/login" className="font-medium text-navy underline">Back to sign in</Link></p>

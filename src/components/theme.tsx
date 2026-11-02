@@ -72,21 +72,24 @@ export function AppearanceControl({ compact = false }: { compact?: boolean }) {
   });
 
   function update(next: Partial<typeof appearance>) {
-    setAppearance((current) => ({ ...current, ...next }));
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...appearance, ...next }));
-    applyAppearance(next.mode ?? appearance.mode, next.accent ?? appearance.accent);
+    setAppearance((current) => {
+      const updated = { ...current, ...next };
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      applyAppearance(updated.mode, updated.accent);
+      return updated;
+    });
   }
 
   return (
     <div className="relative">
-      <button type="button" aria-expanded={open} onClick={() => setOpen((value) => !value)} className={`inline-flex min-h-10 items-center gap-2 rounded-full border border-slate-200 px-3 text-sm font-semibold text-slate-700 transition hover:border-cyan hover:text-navy ${compact ? "px-2" : ""}`}>
+      <button type="button" aria-expanded={open} onClick={() => setOpen((value) => !value)} className={`appearance-control inline-flex min-h-10 items-center gap-2 rounded-full border border-slate-200 px-3 text-sm font-semibold text-slate-700 transition hover:border-cyan hover:text-navy ${compact ? "px-2" : ""}`}>
         <span aria-hidden="true">◐</span>{compact ? <span className="sr-only">Appearance</span> : "Appearance"}
       </button>
       {open ? (
         <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl">
           <p className="text-sm font-semibold text-navy">Personalise Tailorly</p>
           <label className="mt-3 block text-xs font-medium text-slate-500">Theme mode<select value={appearance.mode} onChange={(event) => update({ mode: event.target.value as ThemeMode })} className="mt-1 min-h-10 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-800"><option value="light">Light mode</option><option value="dark">Night mode</option><option value="system">System default</option></select></label>
-          <fieldset className="mt-3"><legend className="text-xs font-medium text-slate-500">Accent colour</legend><div className="mt-2 grid grid-cols-3 gap-2">{(["blue", "cyan", "purple", "green", "rose", "amber"] as Accent[]).map((accent) => <button key={accent} type="button" aria-label={`${accent} accent`} aria-pressed={appearance.accent === accent} onClick={() => update({ accent })} className={`h-8 rounded-lg border-2 ${appearance.accent === accent ? "border-navy" : "border-transparent"}`} style={{ background: accent === "blue" ? "#173d78" : `var(--${accent}-accent, ${accent === "cyan" ? "#21b8c9" : accent === "purple" ? "#9b8cff" : accent === "green" ? "#37c98b" : accent === "rose" ? "#f07f9a" : "#e7ad45"})` }}><span className="sr-only">{accent}</span></button>)}</div></fieldset>
+          <fieldset className="mt-3"><legend className="text-xs font-medium text-slate-500">Accent colour</legend><div className="mt-2 grid grid-cols-3 gap-2">{(["blue", "cyan", "purple", "green", "rose", "amber"] as Accent[]).map((accent) => <button key={accent} type="button" aria-label={`${accent} accent`} aria-pressed={appearance.accent === accent} onClick={() => update({ accent })} className={`h-8 rounded-lg border-2 ${appearance.accent === accent ? "border-navy" : "border-transparent"}`} style={{ background: { blue: "#173d78", cyan: "#21b8c9", purple: "#9b8cff", green: "#37c98b", rose: "#f07f9a", amber: "#e7ad45" }[accent] }}><span className="sr-only">{accent}</span></button>)}</div></fieldset>
         </div>
       ) : null}
     </div>

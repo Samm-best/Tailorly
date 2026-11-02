@@ -37,7 +37,7 @@ export default function LoginPage() {
           <Field label="Password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" required error={errors.password} />
           <button type="button" onClick={() => setShowPassword((value) => !value)} className="absolute right-3 top-8 text-xs font-semibold text-navy">{showPassword ? "Hide" : "Show"}</button>
         </div>
-        <Button type="submit" disabled={busy} className="auth-submit w-full rounded-xl bg-gradient-to-r from-navy to-[#245aa5]">{busy ? "Signing in..." : "Sign in →"}</Button>
+        <Button type="submit" disabled={busy} className="auth-submit w-full rounded-xl">{busy ? "Signing in..." : "Sign in →"}</Button>
       </form>
       <div className="mt-4 flex justify-between text-sm">
         <Link href="/forgot-password" className="font-medium text-cyan-dark hover:text-navy">Forgot password?</Link>

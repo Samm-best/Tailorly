@@ -13,6 +13,8 @@ export default function ResetPasswordPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
+    // The token is read client-side to avoid exposing it in the server-rendered HTML.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setToken(new URLSearchParams(window.location.search).get("token") ?? "");
   }, []);
 
@@ -50,7 +52,7 @@ export default function ResetPasswordPage() {
         {error && !errors.password ? <Alert kind="error">{error}</Alert> : null}
         <Field label="New password" name="password" type="password" autoComplete="new-password" required error={errors.password} hint="At least 10 characters with a letter and a number." />
         <Field label="Confirm password" name="confirm" type="password" autoComplete="new-password" required error={errors.confirm} />
-        <Button type="submit" disabled={busy} className="w-full">{busy ? "Saving..." : "Update password"}</Button>
+        <Button type="submit" disabled={busy} className="auth-submit w-full">{busy ? "Saving..." : "Update password"}</Button>
       </form>
     </AuthShell>
   );

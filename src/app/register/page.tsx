@@ -60,7 +60,7 @@ export default function RegisterPage() {
           <button type="button" onClick={() => setShowConfirm((value) => !value)} className="absolute right-3 top-8 text-xs font-semibold text-navy">{showConfirm ? "Hide" : "Show"}</button>
         </div>
         <label className="flex items-start gap-2 text-sm text-slate-600"><input type="checkbox" name="termsAccepted" required className="mt-1 size-4" /> <span>I agree to the <Link href="/terms" className="font-medium text-navy underline">Terms</Link> and <Link href="/privacy" className="font-medium text-navy underline">Privacy Policy</Link>.</span></label>
-        <Button type="submit" disabled={busy} className="auth-submit w-full rounded-xl bg-gradient-to-r from-navy to-[#245aa5]">{busy ? "Creating account..." : "Create account →"}</Button>
+        <Button type="submit" disabled={busy} className="auth-submit w-full rounded-xl">{busy ? "Creating account..." : "Create account →"}</Button>
       </form>
       <p className="mt-4 text-sm text-slate-600">Already registered? <Link href="/login" className="font-semibold text-cyan-dark hover:text-navy">Sign in</Link></p>
     </AuthShell>

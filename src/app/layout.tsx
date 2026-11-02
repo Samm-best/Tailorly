@@ -8,6 +8,10 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "sw
 export const metadata: Metadata = {
   title: { default: "Tailorly", template: "%s | Tailorly" },
   description: "Your Tailoring Business, Digitally Connected.",
+  icons: {
+    icon: "/brand/tailorly-mark.png",
+    apple: "/brand/tailorly-mark.png",
+  },
 };
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#173D78" };

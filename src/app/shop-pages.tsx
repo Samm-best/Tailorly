@@ -19,7 +19,7 @@ export function StockBadge({ state }: { state: PublicProduct["state"] }) {
 export const DEMO_FASHION_IMAGES: Record<string, string> = {
   "senator-suit": "/fashion/download-6.webp",
   "two-piece-business-suit": "/fashion/images-23.jpeg",
-  "custom-agbada": "/fashion/images-28.jpeg",
+  "bespoke-native-fitting": "/fashion/bespoke_vs_ready_to_wear.webp",
   "ankara-peplum-dress": "/fashion/african-fashion-7.png",
   "aso-ebi-set": "/fashion/images-35.jpeg",
 };

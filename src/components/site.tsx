@@ -28,10 +28,10 @@ const socialLinks = [
 export function MarketingShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-          <BrandMark />
-          <nav aria-label="Main" className="relative z-40 order-3 flex w-full flex-wrap gap-1 text-sm md:order-none md:w-auto">
+      <header className="marketing-header sticky top-0 z-30 border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
+          <BrandMark className="shrink-0" />
+          <nav aria-label="Main" className="relative z-40 hidden flex-wrap gap-1 text-sm md:flex">
             {MAIN_NAV.map((n) => (
               <Link key={n.href} href={n.href} className="nav-link whitespace-nowrap rounded-md px-3 py-2 text-slate-700 hover:bg-slate-100 hover:text-navy">{n.label}</Link>
             ))}
@@ -43,10 +43,21 @@ export function MarketingShell({ children }: { children: ReactNode }) {
               </div>
             </details>
           </nav>
-          <div className="flex items-center gap-2">
+          <details className="mobile-nav relative z-50 shrink-0 md:hidden">
+            <summary aria-label="Open navigation menu" className="mobile-nav-trigger inline-flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-full border-2 border-navy bg-white text-navy shadow-sm transition hover:border-cyan hover:bg-cyan/10 [&::-webkit-details-marker]:hidden">
+              <span className="sr-only">Open navigation menu</span><span aria-hidden="true" className="text-xl leading-none">☰</span>
+            </summary>
+            <div className="mobile-nav-menu absolute right-0 top-full z-50 mt-2 w-[min(18rem,calc(100vw-1.5rem))] rounded-2xl border border-slate-200 bg-white p-2 text-sm shadow-xl">
+              {MAIN_NAV.map((n) => <Link key={n.href} href={n.href} className="block rounded-xl px-4 py-3 font-medium text-slate-700 hover:bg-cyan/10 hover:text-navy">{n.label}</Link>)}
+              <div className="my-1 border-t border-slate-100" />
+              <Link href="/about" className="block rounded-xl px-4 py-3 font-medium text-slate-700 hover:bg-cyan/10 hover:text-navy">About Tailorly</Link>
+              <Link href="/about/founder" className="block rounded-xl px-4 py-3 font-medium text-slate-700 hover:bg-cyan/10 hover:text-navy">Meet the Founder</Link>
+            </div>
+          </details>
+          <div className="header-actions flex shrink-0 items-center gap-1.5 sm:gap-2">
             <AppearanceControl compact />
-            <Link href="/login" className={ctaGhost}>Sign in</Link>
-            <Link href="/get-started" className={ctaPrimary}>Get started</Link>
+            <Link href="/login" className={`${ctaGhost} header-action`}>Sign in</Link>
+            <Link href="/get-started" className={`${ctaPrimary} header-action`}>Get started</Link>
           </div>
         </div>
       </header>
@@ -83,7 +94,9 @@ export function MarketingShell({ children }: { children: ReactNode }) {
           </div>
         </div>
       </footer>
-      <a href="https://wa.me/2347031830569" target="_blank" rel="noopener noreferrer" aria-label="Chat with Tailorly on WhatsApp" className="fixed bottom-5 right-5 z-40 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-2xl text-white shadow-lg ring-4 ring-white transition hover:scale-105">⌕</a>
+      <a href="https://wa.me/2347031830569" target="_blank" rel="noopener noreferrer" aria-label="Chat with Tailorly on WhatsApp" className="whatsapp-float fixed bottom-4 right-4 z-40 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg ring-4 ring-white transition hover:scale-105 sm:bottom-5 sm:right-5">
+        <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="currentColor"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.3A9.5 9.5 0 1 0 12 2.5Zm0 17.2a7.6 7.6 0 0 1-3.9-1.1l-.3-.2-2.8.8.8-2.7-.2-.3A7.6 7.6 0 1 1 12 19.7Zm4.2-5.7c-.2-.1-1.3-.6-1.5-.7-.2-.1-.4-.1-.6.1l-.7.9c-.1.1-.3.2-.5.1a6.1 6.1 0 0 1-3.1-2.7c-.2-.3 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.6c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.1s.9 2.4 1 2.5a9.3 9.3 0 0 0 3.6 3.4c1.3.6 1.8.7 2.1.7.3 0 1.1-.4 1.3-.8.2-.4.2-.8.2-.8s-.2-.1-.4-.2Z" /></svg>
+      </a>
     </div>
   );
 }

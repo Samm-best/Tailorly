@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { Alert } from "@/components/ui";
+import { Alert, BrandMark } from "@/components/ui";
 import { api } from "@/lib/client-api";
 import { formatNaira } from "@/catalogue/money";
 import { AppearanceControl } from "@/components/theme";
@@ -69,16 +69,24 @@ export default function AccountPage() {
             <span><strong className="block text-2xl">Tailorly</strong><small className="block text-[10px] text-blue-100">Your Tailoring Business,<br />Digitally Connected.</small></span>
           </Link>
           <nav aria-label="Account" className="grid gap-1">
-            {navigation.map(([icon, label, href]) => <Link key={label} href={href} className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition hover:bg-white/15 ${label === "Dashboard" ? "bg-cyan/90 font-semibold text-white shadow-lg" : "text-blue-50"}`}><span className="w-5 text-center text-lg">{icon}</span>{label}{label === "Notifications" && unreadCount > 0 ? <span className="ml-auto rounded-full bg-rose-500 px-2 py-0.5 text-[10px]">{unreadCount}</span> : null}</Link>)}
+            {navigation.map(([icon, label, href]) => <Link key={label} href={href} className={`dashboard-nav-link flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition hover:bg-white/15 ${label === "Dashboard" ? "dashboard-nav-active font-semibold text-white shadow-lg" : "text-blue-50"}`}><span className="w-5 text-center text-lg">{icon}</span>{label}{label === "Notifications" && unreadCount > 0 ? <span className="ml-auto rounded-full bg-rose-500 px-2 py-0.5 text-[10px]">{unreadCount}</span> : null}</Link>)}
           </nav>
           <div className="mt-auto rounded-2xl border border-cyan/70 bg-navy/40 p-5 text-center"><p className="text-2xl">♛</p><p className="mt-2 font-semibold">Upgrade to Premium</p><p className="mt-1 text-xs text-blue-100">Enjoy more benefits!</p><Link href="/get-started" className="mt-4 inline-flex rounded-full bg-white px-4 py-2 text-xs font-semibold text-navy">Learn More →</Link></div>
           <button type="button" className="logout-button mt-6 flex w-full items-center gap-2 rounded-xl border-t border-white/15 px-3 pt-5 text-left text-sm text-blue-100" onClick={() => { void api("/api/v1/auth/logout", { method: "POST", body: {} }).then(() => window.location.assign("/login")); }}><span className="text-lg">↪</span> Sign out</button>
         </aside>
 
         <main className="min-w-0 flex-1">
-          <header className="border-b border-white/70 bg-white/75 px-4 py-4 shadow-sm backdrop-blur sm:px-8">
+          <header className="dashboard-header border-t-4 border-cyan border-b border-white/70 bg-white/75 px-4 py-4 shadow-sm backdrop-blur sm:px-8">
             <div className="mx-auto flex max-w-7xl items-center gap-4">
-              <Link href="/" className="text-xl font-bold text-navy lg:hidden">Tailorly</Link>
+              <BrandMark className="lg:hidden" />
+              <details className="account-mobile-nav relative lg:hidden">
+                <summary aria-label="Open dashboard navigation" className="inline-flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-full border-2 border-navy bg-white text-navy shadow-sm [&::-webkit-details-marker]:hidden">
+                  <span className="sr-only">Open dashboard navigation</span><span aria-hidden="true" className="text-xl leading-none">☰</span>
+                </summary>
+                <div className="account-mobile-nav-menu absolute left-0 top-full z-50 mt-2 w-[min(19rem,calc(100vw-2rem))] rounded-2xl border border-slate-200 bg-white p-2 text-sm shadow-xl">
+                  {navigation.map(([icon, label, href]) => <Link key={label} href={href} className={`dashboard-mobile-nav-link flex items-center gap-3 rounded-xl px-4 py-3 font-medium text-slate-700 hover:text-navy ${label === "Dashboard" ? "dashboard-mobile-nav-active" : ""}`}><span className="w-5 text-center text-lg text-cyan-dark">{icon}</span>{label}{label === "Notifications" && unreadCount > 0 ? <span className="ml-auto rounded-full bg-rose-500 px-2 py-0.5 text-[10px] text-white">{unreadCount}</span> : null}</Link>)}
+                </div>
+              </details>
               <label className="hidden max-w-xl flex-1 items-center gap-3 rounded-xl bg-slate-100 px-4 py-3 text-sm text-slate-400 sm:flex"><span className="text-lg">⌕</span><input aria-label="Search" placeholder="Search shops, products, or designs..." className="w-full bg-transparent outline-none" /></label>
               <div className="ml-auto flex items-center gap-3"><AppearanceControl compact /><Link href="/account#notifications" aria-label="Notifications" className="relative text-xl text-navy">♧{unreadCount > 0 ? <span className="absolute -right-2 -top-2 rounded-full bg-rose-500 px-1.5 text-[10px] text-white">{unreadCount}</span> : null}</Link><div className="hidden text-right sm:block"><p className="text-sm font-semibold text-navy">{me.user.fullName}</p><p className="text-xs text-cyan">Customer</p></div>{me.user.profileImage ? <img src={me.user.profileImage.url} alt={`${me.user.fullName} profile`} className="h-10 w-10 rounded-full object-cover" /> : <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-cyan/20 font-bold text-navy">{firstName[0]}</span>}</div>
             </div>
