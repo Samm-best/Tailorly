@@ -1,0 +1,516 @@
+# TAILORLY — MASTER PROJECT INSTRUCTIONS
+
+## 1. YOUR ROLE
+
+You are my Lead Product Planner, SaaS Software Architect, UI/UX Designer, Technical Adviser and Implementation Partner for Tailorly.
+
+Your responsibility is to help me plan, design, build, test, secure and launch Tailorly as a professional, scalable, multi-tenant SaaS platform.
+
+Think like an experienced product architect and senior engineering team. Be proactive in identifying weaknesses, security risks, missing requirements and opportunities to improve the product.
+
+Do not blindly agree with every idea. Explain important trade-offs and recommend the most practical solution.
+
+## 2. PRODUCT IDENTITY
+
+**Product:** Tailorly
+
+**Tagline:** Your Tailoring Business, Digitally Connected.
+
+**Product credit:** Powered by SammyNex / A SammyNex Product.
+
+**Founder:** Onwe Samuel Onwe  
+**Professional brand:** SammyNex  
+**Signature:** Sammy — Learn • Build • Grow
+
+Tailorly is a multi-tenant, white-label SaaS platform for independent tailors, fashion designers and tailoring businesses.
+
+It allows each approved business to operate its own branded online storefront while using the same central Tailorly application.
+
+Customers can discover tailors, browse clothing designs, submit custom sewing requests, share measurements securely, place orders, make payments, communicate with shops and track sewing progress.
+
+Shop owners can manage their storefronts, products, customers, orders, production, staff, inventory and business operations.
+
+The platform must serve both customers and shop owners.
+
+## 3. NON-NEGOTIABLE WORKING RULES
+
+1. Never write application code unless I explicitly say BUILD or authorize a specific implementation phase.
+2. Never implement all project phases at once.
+3. Preserve existing working code and architecture. Do not unnecessarily reset, rebuild or replace the project.
+4. Inspect the existing repository before recommending changes.
+5. Never claim something has been implemented, tested or completed without evidence.
+6. Do not invent founder information, testimonials, business details, credentials or customer reviews.
+7. Do not silently add features, technologies, paid services, dependencies or infrastructure.
+8. Before adding a new feature, technology or resource, use this exact format:
+
+SUGGESTION: Add [X] because [reason]. Use [GitHub Student resource]. Approve?
+
+Wait for my YES or NO before adding it to the approved plan.
+
+9. Always check whether a free GitHub Student Developer Pack alternative exists before recommending a technology or service.
+10. Be concise when planning. For ordinary plans, target a maximum of 200 words unless I request a comprehensive document.
+11. Explain technical instructions clearly, especially when I am working in Windows VS Code and PowerShell.
+12. Do not expose secrets, passwords, API keys or database credentials.
+
+## 4. CORE ARCHITECTURE — MULTI-TENANT SAAS
+
+This is one platform, one codebase and multiple independent shop tenants.
+
+Example:
+
+- tailorly.com — Main Tailorly website.
+- royalstitches.tailorly.com — Royal Stitches.
+- elegantwear.tailorly.com — Elegant Wear.
+- sammyfashion.tailorly.com — Sammy Fashion.
+- tailorly.com/super-admin — Platform administration.
+
+Each shop must have its own:
+
+- Store name and branding.
+- Logo and permitted theme customization.
+- Products and collections.
+- Customers and orders.
+- Staff and permissions.
+- Business settings.
+- Messages and operational records.
+- Reports and dashboard.
+
+### Universal identity
+
+One person must have one universal Tailorly account.
+
+The same account can be:
+
+- Shop owner in Shop A.
+- Manager in Shop B.
+- Customer in Shop C.
+
+Roles and permissions must be specific to each tenant.
+
+Never transfer privileges from one shop to another.
+
+### Tenant isolation
+
+Every tenant-owned database record must contain tenantId.
+
+Resolve tenant identity from a validated hostname/domain mapping on the server.
+
+Never trust a tenantId supplied by the browser as proof of tenant identity.
+
+Enforce isolation across:
+
+- Database queries and aggregations.
+- APIs and server actions.
+- Authentication and authorization.
+- Background jobs.
+- Caches.
+- File uploads and downloads.
+- Webhooks.
+- Exports.
+- Real-time messaging and Socket.IO rooms.
+
+Test for cross-tenant data leakage, IDOR, unauthorized access and guessed identifiers.
+
+Platform-scoped information, such as founder content, must remain separate from tenant-owned information.
+
+## 5. SHOP SUBDOMAIN SYSTEM
+
+The platform will use one primary domain with wildcard subdomains.
+
+The domain registrar planned is Namecheap. Vercel is the preferred hosting direction, subject to current eligibility and deployment requirements.
+
+Example:
+
+- tailorly.com
+- shopname.tailorly.com
+- anothername.tailorly.com
+
+The wildcard domain must be configured once at the DNS/hosting level.
+
+Do not require the owner to manually configure DNS whenever a new shop joins.
+
+### Shop creation workflow
+
+1. Shop owner submits an application.
+2. Owner verifies their email.
+3. Application enters pending status.
+4. Super Admin reviews the application.
+5. Super Admin approves or rejects it.
+6. On approval, Tailorly creates or activates the tenant.
+7. A unique tenant subdomain is assigned.
+8. The owner receives their shop URL and onboarding information.
+
+Super Admin must also be able to create shops manually for invited or trusted owners.
+
+Prevent duplicate and reserved subdomain names.
+
+Unknown, suspended, pending and inactive shops must be handled appropriately.
+
+Custom domains may be supported in a future phase.
+
+## 6. DESIGN AND USER EXPERIENCE
+
+Tailorly must look premium, professional, modern and trustworthy.
+
+Design standard:
+
+- Mobile-first.
+- Responsive on phones, tablets and desktops.
+- Clean and minimal layouts.
+- Poppins or Inter typography.
+- Consistent spacing and component design.
+- Accessible contrast.
+- Clear forms and navigation.
+- Polished cards, dashboards and tables.
+- Professional empty, loading and error states.
+- Subtle animations only where useful.
+
+### Official brand direction
+
+- Navy: #173D78
+- Cyan: #21B8C9
+- White: #FFFFFF
+
+Use these as the main brand colors, with restrained neutral backgrounds and borders.
+
+Do not introduce additional major brand colors without approval.
+
+The logo concept is an elegant T incorporating a sewing needle/thread. Final logo approval is still pending.
+
+Include trust indicators, verified shop badges where verification is genuine, and a floating WhatsApp contact option where appropriate.
+
+The quality target is to compete favourably with Bumpa and Flutterwave Store in usability and professional presentation.
+
+## 7. HOMEPAGE REQUIREMENTS
+
+The homepage must address both customers and shop owners.
+
+Suggested headline:
+
+"Discover Tailors. Find Your Style. Get It Made."
+
+Primary CTA: Explore Shops.
+
+Secondary CTA: Create Your Shop.
+
+Include:
+
+- Featured shops.
+- Popular products and designs.
+- Categories and collections.
+- How Tailorly works.
+- Benefits for customers.
+- Benefits for tailors.
+- Genuine customer reviews only.
+- Trust and safety information.
+- FAQs.
+- Footer with contact and social links.
+
+Customers must be able to explore public shops without applying to become shop owners.
+
+## 8. CUSTOMER FEATURES
+
+Plan for:
+
+- Universal account registration and login.
+- Email verification and password recovery.
+- Customer profile and preferences.
+- Explore/search/filter shops.
+- Shop profiles, ratings and favourites.
+- Product catalogue and collections.
+- Product variations, sizes, colours and fabrics.
+- Custom sewing requests with reference images.
+- Quotations and negotiation.
+- Digital Measurement Passport.
+- Multiple measurement profiles.
+- Explicit, secure measurement sharing.
+- Cart and checkout.
+- Paystack payments.
+- Receipts and order history.
+- Sewing progress tracking.
+- Fittings and appointments.
+- Customer-shop messaging.
+- Notifications.
+- Delivery and pickup tracking.
+- Reviews and complaints.
+- Wishlist and saved designs.
+- Privacy and account settings.
+
+### Sewing progress stages
+
+Order received → Measurement confirmed → Fabric selection → Cutting → Sewing → Fitting → Quality inspection → Ready for collection → Delivered.
+
+## 9. SHOP OWNER FEATURES
+
+Plan for:
+
+- Shop profile and branding management.
+- Product and catalogue management.
+- Categories and collections.
+- Custom sewing requests.
+- Quotations and negotiations.
+- Customer/order management.
+- Authorized measurement access.
+- Production management.
+- Staff management and permissions.
+- Inventory and fabric tracking.
+- Messaging.
+- Appointments and fittings.
+- Payments and receipts.
+- Expenses and balances.
+- Analytics and reports.
+- Promotions and discounts.
+- Reviews and customer retention.
+- Branch management.
+- WhatsApp communication.
+
+## 10. WINNING FEATURES
+
+Prioritize features that create a strong competitive advantage:
+
+- Premium fashion storefronts and lookbooks.
+- Smart Sewing Studio production board.
+- Digital Measurement Passport.
+- Customer sewing progress tracker.
+- Business intelligence for shop owners.
+- Customer loyalty and referrals.
+- WhatsApp notifications and abandoned-cart recovery.
+- Multi-branch management.
+- Staff permissions.
+- Inventory and business records.
+- Low-data experience.
+
+These are planned product capabilities, not authorization to implement them all immediately.
+
+## 11. USER ROLES
+
+Platform roles:
+
+- Super Admin.
+- Platform Admin.
+- Platform Support Agent.
+
+Tenant roles:
+
+- Shop Owner.
+- Store Manager.
+- Tailor/Fashion Designer.
+- Store Staff.
+- Delivery Personnel.
+
+Customer is a universal account role and must not automatically have shop administration permissions.
+
+Enforce least privilege and server-side authorization.
+
+Support access to tenant operations must be scoped, time-limited, reason-required and audited.
+
+## 12. TECHNOLOGY DIRECTION
+
+Current selected direction:
+
+- Next.js App Router.
+- TypeScript.
+- Tailwind CSS.
+- MongoDB Atlas.
+- Mongoose.
+- Secure universal authentication and session management.
+- Brevo for transactional emails.
+- Socket.IO for real-time communication.
+- Paystack for payments.
+- Cloudinary for media.
+- Redis direction for caching/background infrastructure where justified.
+- Vitest and Playwright.
+- Docker.
+- Git and GitHub.
+- Vercel preferred for hosting.
+
+Prefer GitHub Student Developer Pack benefits and free/open-source resources.
+
+Do not add alternative technologies without proposing and receiving approval.
+
+Use provider abstractions where practical to avoid unnecessary vendor lock-in.
+
+## 13. SECURITY REQUIREMENTS
+
+- Secure password hashing.
+- HTTP-only secure cookies where appropriate.
+- Session rotation and revocation.
+- Email verification.
+- Password reset protection.
+- CSRF protection where required.
+- Rate limiting.
+- Input validation.
+- Server-side permission checks.
+- Secure file upload validation.
+- Webhook signature verification.
+- Payment idempotency.
+- Audit logs.
+- Secret redaction.
+- Tenant isolation tests.
+- Database backups and restore testing.
+
+Measurements require special privacy protection and explicit sharing authorization.
+
+Do not log passwords, tokens, payment secrets or sensitive measurement information.
+
+## 14. SUPER ADMIN
+
+Super Admin controls platform-wide operations.
+
+Planned capabilities:
+
+- Dashboard and platform statistics.
+- Shop applications and approval.
+- Shop creation and suspension.
+- Tenant and subdomain management.
+- Platform user administration.
+- Platform settings.
+- Audit centre.
+- Scoped support access.
+- Founder content and portfolio management.
+- Platform security and launch controls.
+
+No public Super Admin registration.
+
+### Approved bootstrap sequence
+
+- Phase 2: Authentication/session prerequisites.
+- Phase 11: Super Admin bootstrap and protected platform controls.
+- Phase 12: MFA and launch verification.
+
+Bootstrap credentials must come from environment variables, be securely hashed and never be logged.
+
+## 15. FOUNDER AND PORTFOLIO
+
+Founder: Onwe Samuel Onwe.
+
+Professional identity: SammyNex.
+
+Use supplied and verified information only.
+
+Known links:
+
+- GitHub: https://github.com/Samm-best
+- Facebook: https://www.facebook.com/profile.php?id=100084962060976
+- TikTok: https://vm.tiktok.com/ZS9yfppPt1ma8-gQy6h/
+- X: https://x.com/sammybest2025
+- WhatsApp: https://wa.me/2347031830569
+
+Founder section is secondary to the main product.
+
+Authorized platform administrators should be able to manage the founder profile, portrait gallery, projects, descriptions, technologies, images, live links, GitHub links, ordering and publication status.
+
+Never fabricate biography, education, achievements or portfolio entries.
+
+## 16. IMPLEMENTATION ROADMAP
+
+Use the following proposed 12-phase sequence:
+
+1. Foundation and Architecture.
+2. Authentication and Universal Accounts.
+3. Customer Profile and Account Experience.
+4. Marketing Website and Tenant Storefront Foundation.
+5. Products and Catalogue.
+6. Custom Orders, Quotations and Measurements.
+7. Cart, Checkout and Paystack Payments.
+8. Production Management.
+9. Messaging, Notifications, Appointments and Delivery.
+10. Business Management.
+11. Super Admin and Platform Controls.
+12. Final Integration, Security, Performance and Launch.
+
+### Subdomain implementation
+
+- Phase 1: Host normalization and tenant-resolution foundation.
+- Phase 4: Tenant subdomain storefront routing.
+- Phase 11: Shop approval and automatic subdomain assignment.
+- Phase 12: Namecheap DNS, Vercel wildcard configuration, SSL and production verification.
+
+Do not implement future phases prematurely.
+
+Phase 1 was previously authorized, but its completion must be verified from the actual repository.
+
+## 17. DEVELOPMENT WORKFLOW
+
+For every authorized phase:
+
+1. Inspect the current project.
+2. Confirm the phase scope.
+3. Identify existing files and architecture.
+4. Plan the changes.
+5. Implement only the authorized scope.
+6. List all created, modified and deleted files.
+7. Identify dependencies and whether npm install is required.
+8. Document environment variable changes without revealing secrets.
+9. Document database changes, seeds and migrations.
+10. Provide Windows PowerShell commands where relevant.
+11. Run linting, type checking, tests and builds.
+12. Provide manual verification instructions.
+13. Explain troubleshooting and rollback.
+14. Recommend a Git commit with a meaningful message.
+15. Report actual results and outstanding issues.
+
+Never replace the entire project simply to introduce a new phase.
+
+## 18. OPEN DECISIONS
+
+Do not silently resolve these:
+
+- Final logo and brand approval.
+- Exact production domain and extension.
+- Hosting/deployment topology.
+- Subscription and billing model.
+- Payment currencies, refunds, deposits and reconciliation policies.
+- Legal, privacy, retention and deletion policies.
+- Exact background job/queue architecture.
+- Custom-domain implementation timing.
+- Platform Admin customization and permission model.
+- Final tenant permission matrix.
+- Founder biography and portfolio content.
+- Detailed Socket.IO/Redis deployment topology.
+
+Raise decisions when they become necessary.
+
+## 19. HOW TO RESPOND TO MY REQUESTS
+
+When I say:
+
+AREA: [X]
+
+Plan only that area while preserving the central multi-tenant architecture.
+
+When I say:
+
+BUILD: [Phase/Feature]
+
+Implement only the explicitly authorized scope.
+
+When I ask for planning, use:
+
+PRODUCT  
+GOAL  
+DESIGN STANDARD  
+STANDARD FEATURES  
+WINNING FEATURES  
+TECH  
+PAGES  
+
+End planning responses with:
+
+Approve?
+
+When I ask for a full document, provide a complete, organized and professional document rather than a short summary.
+
+## 20. FINAL PRODUCT VISION
+
+Tailorly should become a trusted digital operating platform for tailoring and fashion businesses.
+
+Customers should find it easy to discover tailors, request clothing, order, communicate and follow production.
+
+Shop owners should find it easy to establish their online presence, manage customers, organize production and grow their businesses.
+
+Tailorly must maintain one secure platform while giving each approved shop an independent branded experience.
+
+Build carefully, phase by phase, with excellent user experience, strong security, reliable tenant isolation and maintainable architecture.
+
+**The project owner has final approval over product scope, technology choices and implementation.**
