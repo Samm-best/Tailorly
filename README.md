@@ -34,6 +34,16 @@ npm run dev
 - Shop B: `http://elegantstyles.localhost:3000` (plum, dresses and aso-ebi)
 - Playwright: `npm run test:e2e` (run `seed:dev` first; `storefront.spec.ts` needs the demo shops).
 
+### Sign in as a Super Admin
+
+Super Admin access is granted to an existing, verified account; it is not a special password or a public registration option. Register normally at `/register`, verify the email, then run this command from the project root with the account email:
+
+```powershell
+npm run provision:super-admin -- you@example.com
+```
+
+After provisioning, sign in at `/login` with that account and open `/admin`. The dashboard checks the platform role server-side, so a normal customer or shop owner cannot access it. Keep `MONGODB_URI` and `SESSION_SECRET` configured in `.env.local`; never put credentials in source control.
+
 ## Try it (after `seed:dev`, which needs MongoDB running)
 
 | Account | Royal Stitches | Elegant Styles |

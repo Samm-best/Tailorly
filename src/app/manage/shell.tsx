@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { Alert, BrandMark } from "@/components/ui";
 import { AppearanceControl } from "@/components/theme";
@@ -11,16 +12,17 @@ type Access = { shop: Shop; role: string; permissions: string[]; emailVerified: 
 
 /** Friendly gate only. The real enforcement is on the server: every /api/v1/shop/* route checks membership and role for this shop. */
 export function ManageShell({ title, children }: { title: string; children: ReactNode }) {
+  const router = useRouter();
   const [state, setState] = useState<{ status: "loading" } | { status: "denied"; message: string } | { status: "ok"; access: Access }>({ status: "loading" });
 
   useEffect(() => {
     Promise.all([api<Omit<Access, "emailVerified">>("/api/v1/shop/profile"), api<{ user: { emailVerified: boolean } }>("/api/v1/auth/me")]).then(([r, me]) => {
       if (r.ok && r.data.shop) setState({ status: "ok", access: { ...r.data, emailVerified: me.ok && me.data.user.emailVerified } });
-      else if (!r.ok && r.error.code === "UNAUTHENTICATED") window.location.assign(`/login?next=${encodeURIComponent(window.location.pathname)}`);
+      else if (!r.ok && r.error.code === "UNAUTHENTICATED") router.push(`/login?next=${encodeURIComponent(window.location.pathname)}`);
       else if (!r.ok && r.error.code === "NOT_FOUND") setState({ status: "denied", message: "Shop management is only available on a shop address, for example yourshop.tailorly.com/manage." });
       else setState({ status: "denied", message: r.ok ? "Shop not found." : r.error.message });
     });
-  }, []);
+  }, [router]);
 
   if (state.status === "loading") return <main className="mx-auto flex max-w-4xl flex-col items-start gap-5 px-4 py-16 text-sm text-slate-600"><BrandMark /><span>Loading shop management...</span></main>;
   if (state.status === "denied") return <main className="mx-auto max-w-md px-4 py-16"><Alert kind="error">{state.message}</Alert><p className="mt-4 text-sm"><Link href="/" className="underline">Back to the shop</Link></p></main>;
@@ -31,23 +33,27 @@ export function ManageShell({ title, children }: { title: string; children: Reac
     ["/manage/products", "Products", "catalogue.manage"],
     ["/manage/categories", "Categories", "catalogue.manage"],
     ["/manage/production", "Production", "production.view"],
-    ["/manage/operations", "Operations", "orders.manage"],
     ["/manage/staff", "Staff", "staff.manage"],
     ["/manage/profile", "Storefront", "shop.manage"],
   ].filter((item) => can(item[2]));
   return (
-    <div className="dashboard-shell manage-dashboard mx-auto max-w-6xl border-t-4 border-cyan px-4 py-6 sm:px-6">
-      <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
+    <div className="dashboard-shell manage-dashboard mx-auto max-w-6xl border-t-4 border-cyan px-4 py-4 sm:px-6 sm:py-6">
+      <header className="dashboard-header mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:mb-6 sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
           <BrandMark className="hidden sm:inline-flex" />
           <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-cyan-dark">Shop management</p>
-          <h1 className="text-2xl font-semibold text-navy">{state.access.shop.name}: {title}</h1>
+            <p className="text-xs font-semibold uppercase tracking-wide text-cyan-dark">Shop management</p>
+            <h1 className="text-xl font-semibold text-navy sm:text-2xl">{state.access.shop.name}: {title}</h1>
           </div>
+          </div>
+          <AppearanceControl compact />
         </div>
-        <div className="flex items-center gap-2"><AppearanceControl compact /><Link href="/" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-navy transition hover:border-cyan">View storefront</Link></div>
+        <div className="mt-4 flex justify-end sm:mt-0">
+          <Link href="/" className="w-full rounded-full border border-slate-200 px-4 py-2 text-center text-sm font-semibold text-navy transition hover:border-cyan sm:w-auto">View storefront</Link>
+        </div>
       </header>
-      <nav aria-label="Manage" className="mb-6 flex gap-1 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">
+      <nav aria-label="Manage" className="dashboard-manage-nav mb-6 flex gap-1 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">
         {nav.map(([h, l], index) => <Link key={h} href={h} className={`dashboard-manage-link whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition hover:text-navy ${index === 0 ? "dashboard-manage-active text-navy" : "text-slate-700"}`}>{l}</Link>)}
       </nav>
       {!state.access.emailVerified ? <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-950"><p className="text-sm"><strong>Email not verified.</strong> Verify your account before sensitive shop actions.</p><Link href="/account/profile" className="text-sm font-semibold underline">Verify email</Link></div> : null}
